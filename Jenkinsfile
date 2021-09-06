@@ -20,6 +20,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
+                sshCommand remote: remote, command: 'rm -rf /home/stage/backup/jenkins'
                 sshCommand remote: remote, command: 'cd /home/stage/'
                 sshCommand remote: remote, command: 'git clone https://github.com/kshitijwalukar/jenkins.git'
                 sshCommand remote: remote, command: 'rm -rf /var/www/html/*'
