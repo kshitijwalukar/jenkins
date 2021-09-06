@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sshCommand remote: remote, command: 'git clone https://github.com/kshitijwalukar/Sample-Website.git'
+                sshCommand remote: remote, command: 'git clone https://github.com/kshitijwalukar/jenkins.git'
                 sshCommand remote: remote, command: 'cd /var/www/html/'
                 sshCommand remote: remote, command: 'ls -lrt'
             }
