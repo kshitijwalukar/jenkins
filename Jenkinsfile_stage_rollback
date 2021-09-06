@@ -39,7 +39,7 @@ pipeline {
   }
         post('Send Mail') {
         always {
-            emailext body: 'Rollback Complete', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Rollback'
+            emailext body: 'Stage Rollback Complete', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Stage Rollback'
         }
     }
 }
