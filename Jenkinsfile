@@ -7,10 +7,10 @@ withCredentials([usernamePassword(credentialsId: 'fe95e991-94b8-4103-a575-7c6c6b
         remote.password = password
 }
 pipeline {
-  agent any
-  stages {
-    
-    stage('Backup') {
+    agent any
+    stages {
+            
+        stage('Backup') {
             steps {
                 sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
                 sshCommand remote: remote, command: 'cd /home/stage/backup'
@@ -24,23 +24,5 @@ pipeline {
                 sshCommand remote: remote, command: 'ls -lrt'
             }
         }
-    stage('Test') {
-      parallel {
-        stage('Maven') {
-          steps {
-            echo 'Running from Jenkins file'
-            bat(script: 'mvn compile', label: 'maven')
-          }
-        }
-
-        stage('Cucumber') {
-          steps {
-            cucumber '**/*.json'
-          }
-        }
-
-      }
     }
-
-  }
 }
