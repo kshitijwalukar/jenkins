@@ -50,7 +50,7 @@ pipeline {
     }     
 
   }
-        post {
+        stage('Send mail') {
         always {
             emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
         }
