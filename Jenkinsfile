@@ -29,7 +29,7 @@ pipeline {
         stage('Maven') {
           steps {
             echo 'Running from Jenkins file'
-            bat(script: 'mvn compile', label: 'maven')
+            sh(script: 'mvn compile', label: 'maven')
           }
         }
 
@@ -38,5 +38,9 @@ pipeline {
             cucumber '**/*.json'
           }
         }
+
+      }
     }
+
+  }
 }
