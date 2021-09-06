@@ -24,7 +24,6 @@ pipeline {
                             parameters: [
 
                                     string(defaultValue: '',
-                                            description: 'Enter Change Number',
                                             name: 'Change Number'),
                             ])
 
