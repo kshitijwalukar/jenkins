@@ -12,15 +12,17 @@ pipeline {
     
     stage('Backup') {
             steps {
-                sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
+                sshCommand remote: remote, command: 'cp -a /var/www/html/jenkins/. /home/stage/backup/'
                 sshCommand remote: remote, command: 'cd /home/stage/backup'
                 sshCommand remote: remote, command: 'ls -lrt'
             }
         }
         stage('Deploy') {
             steps {
+                sshCommand remote: remote, command: 'cd /home/stage/'
                 sshCommand remote: remote, command: 'git clone https://github.com/kshitijwalukar/jenkins.git'
-                sshCommand remote: remote, command: 'cd /var/www/html/'
+                sshCommand remote: remote, command: 'mv -a /home/stage/jenkins/. /var/www/html/jenkins/'
+                sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
                 sshCommand remote: remote, command: 'ls -lrt'
             }
         }
