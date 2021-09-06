@@ -13,7 +13,7 @@ pipeline {
     stage('Backup') {
             steps {
                 sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
-                sshCommand remote: remote, command: 'cp -a /var/www/html/* /home/stage/backup/'
+                sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
                 sshCommand remote: remote, command: 'cd /home/stage/backup'
                 sshCommand remote: remote, command: 'ls -lrt'
             }
