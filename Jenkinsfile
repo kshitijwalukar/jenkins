@@ -29,6 +29,13 @@ pipeline {
                 sshCommand remote: remote, command: 'ls -lrt'
             }
         }
+          stage('Apache restart') {
+            steps {
+                sshCommand remote: remote, command: 'cd /'
+                sshCommand remote: remote, command: 'systemctl restart httpd'
+                sshCommand remote: remote, command: 'systemctl status httpd'
+            }
+        }
     stage('Test') {
       parallel {
         stage('Maven') {
