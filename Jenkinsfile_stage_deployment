@@ -7,7 +7,7 @@ withCredentials([usernamePassword(credentialsId: 'fe95e991-94b8-4103-a575-7c6c6b
         remote.password = password
 }
 pipeline {
-  agent any
+  agent {label 'Slave1'}
   stages {
     
     stage('Backup') {
