@@ -15,26 +15,26 @@ pipeline {
                 script {
 
                     // Variables for input
-                    def inputChange
+                    def inputTest
 
                     // Get the input
                     def userInput = input(
-                            id: 'userInput', message: 'Enter Change Number',
+                            id: 'userInput', message: 'Enter path of test reports:?',
                             parameters: [
 
                                     string(defaultValue: 'None',
-                                            name: 'Change'),
+                                            description: 'Test Info file',
+                                            name: 'Test'),
                             ])
 
                     // Save to variables. Default to empty string if not found.
-                    inputChange = userInput.Change?:''
+                    inputTest = userInput.Test?:''
 
                     // Echo to console
-                    echo("Change Number: ${inputChange}")
+                    echo("Test Info file path: ${inputTest}")
                 }
             }
         }
-          
         
           
     stage('Test') {
