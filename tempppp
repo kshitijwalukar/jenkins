@@ -1,1 +1,97 @@
-ee
+def remote = [:]
+remote.name = "stage"
+remote.host = "192.168.245.128"
+remote.allowAnyHosts = true
+withCredentials([usernamePassword(credentialsId: 'fe95e991-94b8-4103-a575-7c6c6bf277f9', passwordVariable: 'password', usernameVariable: 'userName')]) {
+        remote.user = userName
+        remote.password = password
+}
+pipeline {
+  agent {label 'Slave1'}
+  stages {
+  
+    stage ("Request Change Number") {
+      steps {
+        script {
+          env.USERNAME = input message: 'Enter Change Number',
+                             parameters: [string(defaultValue: '',
+                                          description: '',
+                                          name: 'Change Number')]
+        }
+        echo "Change Number: ${env.USERNAME}"
+      }
+    }
+ stage('Backup Data Center 1') {
+            steps {
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "rm -rf /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cp -a /var/www/html/* /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cd /home/prod/backup"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "ls -lrt"'
+                sshCommand remote: remote, command: 'exit'
+            }
+        }
+          
+        stage('Deploy Data Center 1') {
+            steps {
+                sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/ prod@192.168.245.129:/var/www/html/'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cd /var/www/html/jenkins"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "ls -lrt"'
+                sshCommand remote: remote, command: 'exit'
+            }
+        }         
+
+stage('Approve to Proceed Data Center 2') {
+            input {
+                message "Can we Proceed?"
+                ok "Yes"
+            }
+            steps {
+                echo "job is proceeding..."
+            }
+        }
+
+
+ stage('Backup Data Center 2') {
+            steps {
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "rm -rf /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cp -a /var/www/html/* /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cd /home/prod/backup"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "ls -lrt"'
+                sshCommand remote: remote, command: 'exit'
+            }
+        }
+          
+        stage('Deploy Data Center 2') {
+            steps {
+                sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/* prod@192.168.245.130:/var/www/html/'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cd /var/www/html/jenkins"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "ls -lrt"'
+                sshCommand remote: remote, command: 'exit'
+            }
+        }
+
+    stage('Test') {
+      parallel {
+        stage('Maven') {
+          steps {
+            echo 'Running from Jenkins file'
+            bat(script: 'mvn compile', label: 'maven')
+          }
+        }
+
+        stage('Cucumber Report') {
+          steps {
+            cucumber '**/*.json'
+          }
+        }
+
+      }
+    }     
+
+  }
+        post('Send Mail') {
+        always {
+            emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+        }
+    }
+}
