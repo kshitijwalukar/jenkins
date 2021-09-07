@@ -23,7 +23,6 @@ pipeline {
     }
  stage('Backup Data Center 1') {
             steps {
-                sshCommand remote: remote, command: 'ls -lrt'
                 sshCommand remote: remote, command: 'ssh prod@192.168.245.129'
                 sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
                 sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
