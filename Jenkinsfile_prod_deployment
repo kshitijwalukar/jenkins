@@ -13,26 +13,21 @@ pipeline {
   stage("Interactive_Input") {
             steps {
                 script {
+            // Define Variable
+             def USER_INPUT = input(
+                    message: 'Enter Change Number?',
+                    parameters: [
+                            [name: 'input']
+                    ])
 
-                    // Variables for input
-                    def inputTest
+            echo "The answer is: ${USER_INPUT}"
 
-                    // Get the input
-                    def userInput = input(
-                            id: 'userInput', message: 'Enter path of test reports:?',
-                            parameters: [
-
-                                    string(defaultValue: 'None',
-                                            description: 'Test Info file',
-                                            name: 'Test'),
-                            ])
-
-                    // Save to variables. Default to empty string if not found.
-                    inputTest = userInput.Test?:''
-
-                    // Echo to console
-                    echo("Test Info file path: ${inputTest}")
-                }
+            if( "${USER_INPUT}" == "CHG111"){
+                //do something
+            } else {
+                //do something else
+            }
+        }
             }
         }
         
