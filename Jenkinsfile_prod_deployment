@@ -16,9 +16,9 @@ pipeline {
           env.USERNAME = input message: 'Enter Change Number',
                              parameters: [string(defaultValue: '',
                                           description: '',
-                                          name: 'Changenumber')]
+                                          name: 'Change Number')]
         }
-        echo "Username: ${env.USERNAME}"
+        echo "Change Number: ${env.USERNAME}"
       }
     }
           
