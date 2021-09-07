@@ -16,7 +16,6 @@ stage("Interactive_Input") {
 
                     // Variables for input
                     def inputConfig
-                    def inputTest
 
                     // Get the input
                     def userInput = input(
@@ -27,8 +26,6 @@ stage("Interactive_Input") {
                                             description: 'Path of config file',
                                             name: 'Config'),
                             ])
-
-
 
                     // Echo to console
                     echo("IQA Sheet Path: ${inputConfig}")
