@@ -21,7 +21,7 @@ pipeline {
                     def userInput = input(
                             id: 'userInput', message: 'Enter Change Number',
                             parameters: [
-                                    string(defaultValue: '',
+                                    string(defaultValue: ' ',
                                             name: 'Change')
                             ])
 
