@@ -10,7 +10,18 @@ pipeline {
   agent {label 'Slave1'}
   stages {
     
-    stage('Backup') {
+      stage ("Request Change Number") {
+      steps {
+        script {
+          env.USERNAME = input message: 'Enter Change Number',
+                             parameters: [string(defaultValue: '',
+                                          description: '',
+                                          name: 'Change Number')]
+        }
+        echo "Change Number: ${env.USERNAME}"
+      }
+    }
+ stage('Backup Data Center 1') {
             steps {
                 sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
                 sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
@@ -19,7 +30,39 @@ pipeline {
             }
         }
           
-        stage('Deploy') {
+        stage('Deploy Data Center 1') {
+            steps {
+                sshCommand remote: remote, command: 'rm -rf /home/stage/jenkins'
+                sshCommand remote: remote, command: 'cd /home/stage/'
+                sshCommand remote: remote, command: 'git clone https://github.com/kshitijwalukar/jenkins.git'
+                sshCommand remote: remote, command: 'rm -rf /var/www/html/jenkins/*'
+                sshCommand remote: remote, command: 'mv  /home/stage/jenkins/* /var/www/html/jenkins/'
+                sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
+                sshCommand remote: remote, command: 'ls -lrt'
+            }
+        }         
+
+stage('Approve to Proceed Data Center 2') {
+            input {
+                message "Can we Proceed?"
+                ok "Yes"
+            }
+            steps {
+                echo "job is proceeding..."
+            }
+        }
+
+
+ stage('Backup Data Center 2') {
+            steps {
+                sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
+                sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
+                sshCommand remote: remote, command: 'cd /home/stage/backup'
+                sshCommand remote: remote, command: 'ls -lrt'
+            }
+        }
+          
+        stage('Deploy Data Center 2') {
             steps {
                 sshCommand remote: remote, command: 'rm -rf /home/stage/jenkins'
                 sshCommand remote: remote, command: 'cd /home/stage/'
@@ -30,6 +73,7 @@ pipeline {
                 sshCommand remote: remote, command: 'ls -lrt'
             }
         }
+
           
     stage('Test') {
       parallel {
