@@ -37,7 +37,6 @@ stage("Interactive_Input") {
 
                     // Echo to console
                     echo("IQA Sheet Path: ${inputConfig}")
-                    //echo("Test Info file path: ${inputTest}")
                 }
             }
         }
