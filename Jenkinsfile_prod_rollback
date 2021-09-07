@@ -9,23 +9,30 @@ withCredentials([usernamePassword(credentialsId: 'fe95e991-94b8-4103-a575-7c6c6b
 pipeline {
   agent {label 'Slave1'}
   stages {
-    
-    stage('Backup') {
+          
+        stage('Deploy Rollback Data Center 1') {
             steps {
-                sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
-                sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
-                sshCommand remote: remote, command: 'cd /home/stage/backup'
+                sshCommand remote: remote, command: 'rm -rf /var/www/html/jenkins/*'
+                sshCommand remote: remote, command: 'cp -a  /home/stage/backup/. /var/www/html/jenkins/'
+                sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
                 sshCommand remote: remote, command: 'ls -lrt'
             }
         }
-          
-        stage('Deploy') {
+        
+        stage('Approve to Proceed Data Center 2') {
+            input {
+                message "Can we Proceed?"
+                ok "Yes"
+            }
             steps {
-                sshCommand remote: remote, command: 'rm -rf /home/stage/jenkins'
-                sshCommand remote: remote, command: 'cd /home/stage/'
-                sshCommand remote: remote, command: 'git clone https://github.com/kshitijwalukar/jenkins.git'
+                echo "job is proceeding..."
+            }
+        }
+        
+        stage('Deploy Rollback Data Center 2') {
+            steps {
                 sshCommand remote: remote, command: 'rm -rf /var/www/html/jenkins/*'
-                sshCommand remote: remote, command: 'mv  /home/stage/jenkins/* /var/www/html/jenkins/'
+                sshCommand remote: remote, command: 'cp -a  /home/stage/backup/. /var/www/html/jenkins/'
                 sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
                 sshCommand remote: remote, command: 'ls -lrt'
             }
@@ -35,7 +42,6 @@ pipeline {
       parallel {
         stage('Maven') {
           steps {
-            echo 'Running from Jenkins file'
             bat(script: 'mvn compile', label: 'maven')
           }
         }
@@ -52,7 +58,7 @@ pipeline {
   }
         post('Send Mail') {
         always {
-            emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+            emailext body: 'Stage Rollback Complete', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Stage Rollback'
         }
     }
 }
