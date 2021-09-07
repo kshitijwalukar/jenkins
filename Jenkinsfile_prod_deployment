@@ -28,7 +28,7 @@ stage("Interactive_Input") {
                                             name: 'Config'),
                             ])
 
-'
+
 
                     // Echo to console
                     echo("IQA Sheet Path: ${inputConfig}")
