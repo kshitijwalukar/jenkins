@@ -16,6 +16,7 @@ stage("Interactive_Input") {
 
                     // Variables for input
                     def inputConfig
+                    def inputTest
 
                     // Get the input
                     def userInput = input(
@@ -24,14 +25,19 @@ stage("Interactive_Input") {
 
                                     string(defaultValue: 'None',
                                             description: 'Path of config file',
-                                            name: 'Config')
+                                            name: 'Config'),
+                                    string(defaultValue: 'None',
+                                            description: 'Test Info file',
+                                            name: 'Test'),
                             ])
 
                     // Save to variables. Default to empty string if not found.
                     inputConfig = userInput.Config?:''
+                    inputTest = userInput.Test?:''
 
                     // Echo to console
                     echo("IQA Sheet Path: ${inputConfig}")
+                    //echo("Test Info file path: ${inputTest}")
                 }
             }
         }
