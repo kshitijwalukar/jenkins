@@ -22,21 +22,13 @@ pipeline {
       }
     }
          
-stage("Stage with input") {
+
+stage("A") {
     steps {
-      def userInput = false
-        script {
-            def userInp = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']])
-            echo 'userInput: ' + userInp
-
-            if(userInput == true) {
-                // do action
-            } else {
-                // not do action
-                echo "Action was aborted."
-            }
-
-        }    
+      input 'Do you want to proceed to the Deployment?'
+   stage('deploy') {
+     build job: 'deploy',  propagate: false
+   }
     }  
 }
 
