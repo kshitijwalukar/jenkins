@@ -33,7 +33,7 @@ pipeline {
           
         stage('Deploy Data Center 1') {
             steps {
-                sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/* prod@192.168.245.130:/var/www/html/'
+                sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/ prod@192.168.245.130:/var/www/html/'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cd /var/www/html/jenkins"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "ls -lrt"'
                 sshCommand remote: remote, command: 'exit'
