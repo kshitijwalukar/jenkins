@@ -22,7 +22,7 @@ pipeline {
       }
     }
          
-tage('Example') {
+stage('Example') {
             input {
                 message "Can we Proceed?"
                 ok "Yes"
