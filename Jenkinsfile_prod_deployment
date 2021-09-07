@@ -13,10 +13,10 @@ pipeline {
     stage ("Prompt for input") {
       steps {
         script {
-          env.USERNAME = input message: 'Please enter the username',
+          env.USERNAME = input message: 'Enter Change Number',
                              parameters: [string(defaultValue: '',
                                           description: '',
-                                          name: 'Username')]
+                                          name: 'Changenumber')]
         }
         echo "Username: ${env.USERNAME}"
       }
