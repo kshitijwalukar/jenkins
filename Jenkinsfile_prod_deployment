@@ -10,34 +10,17 @@ pipeline {
   agent {label 'Slave1'}
   stages {
   
-    
-        stage("Interactive_Input") {
-            steps {
-                script {
-
-                    // Variables for input
-                    def inputChange
-                    //def inputTest
-
-                    // Get the input
-                    def userInput = input(
-                            id: 'userInput', message: 'Enter path of test reports:?',
-                            parameters: [
-
-                                    string(defaultValue: 'None',
-                                            description: 'Path of config file',
-                                            name: 'Config'),
-                            ])
-
-                    // Save to variables. Default to empty string if not found.
-                    inputChange = userInput.Config?:''
-                    //inputTest = userInput.Test?:''
-
-                    // Echo to console
-                    echo("IQA Sheet Path: ${inputChange}")
-                }
-            }
+    stage ("Prompt for input") {
+      steps {
+        script {
+          env.USERNAME = input message: 'Please enter the username',
+                             parameters: [string(defaultValue: '',
+                                          description: '',
+                                          name: 'Username')]
         }
+        echo "Username: ${env.USERNAME}"
+      }
+    }
           
     stage('Test') {
       parallel {
