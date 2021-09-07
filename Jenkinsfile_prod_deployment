@@ -15,7 +15,7 @@ stage("Interactive_Input") {
                 script {
 
                     // Variables for input
-                    def inputConfig
+                    def inputChange
 
                     // Get the input
                     def userInput = input(
@@ -26,9 +26,11 @@ stage("Interactive_Input") {
                                             description: 'Path of config file',
                                             name: 'Config'),
                             ])
+                            
+                          inputChange = userInput.Config?:''
 
                     // Echo to console
-                    echo("IQA Sheet Path: ${inputConfig}")
+                    echo("IQA Sheet Path: ${inputChange}")
                 }
             }
         }
