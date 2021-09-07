@@ -42,7 +42,7 @@ pipeline {
             }
         }         
 
-stage('Proceed Data Center 2') {
+stage('Approve to Proceed Data Center 2') {
             input {
                 message "Can we Proceed?"
                 ok "Yes"
