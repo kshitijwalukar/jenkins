@@ -17,7 +17,7 @@ pipeline {
 
                     // Variables for input
                     def inputChange
-                    def inputTest
+                    //def inputTest
 
                     // Get the input
                     def userInput = input(
