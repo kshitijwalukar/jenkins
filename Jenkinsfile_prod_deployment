@@ -23,10 +23,7 @@ pipeline {
     }
          
 
-input 'Do you want to proceed to the Deployment?'
-   stage('deploy') {
-     build job: 'deploy',  propagate: false
-   }
+
 
     stage('Test') {
       parallel {
