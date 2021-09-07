@@ -24,7 +24,7 @@ pipeline {
  stage('Backup Data Center 1') {
             steps {
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "rm -rf /home/prod/backup/*"'
-                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cp -a /var/www/html/. /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cp -a /var/www/html/* /home/prod/backup/"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cd /home/prod/backup"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "ls -lrt"'
                 sshCommand remote: remote, command: 'exit'
@@ -54,7 +54,7 @@ stage('Approve to Proceed Data Center 2') {
  stage('Backup Data Center 2') {
             steps {
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "rm -rf /home/prod/backup/*"'
-                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cp -a /var/www/html/. /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cp -a /var/www/html/* /home/prod/backup/"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cd /home/prod/backup"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "ls -lrt"'
                 sshCommand remote: remote, command: 'exit'
