@@ -19,7 +19,7 @@ pipeline {
 
                     // Get the input
                     def userInput = input(
-                            id: 'userInput', message: 'Enter Change Number:?',
+                            id: 'userInput', message: 'Enter Change Number',
                             parameters: [
 
                                     string(defaultValue: '',
@@ -27,7 +27,7 @@ pipeline {
                             ])
 
                     // Save to variables. Default to empty string if not found.
-                    inputConfig = userInput.ChangeNum?:''
+                    ChangeNum = userInput.ChangeNum?:''
 
                     // Echo to console
                     echo("Change Number: ${ChangeNum}")
