@@ -23,7 +23,7 @@ pipeline {
     }
  stage('Backup Data Center 1') {
             steps {
-                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129'
+                sshCommand remote: remote, command: 'ssh -t -t prod@192.168.245.129'
                 sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
                 sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
                 sshCommand remote: remote, command: 'cd /home/stage/backup'
@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy Data Center 1') {
             steps {
                 sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/* prod@192.168.245.129:/var/www/html/'
-                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129'
+                sshCommand remote: remote, command: 'ssh -t -t prod@192.168.245.129'
                 sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
                 sshCommand remote: remote, command: 'ls -lrt'
                 sshCommand remote: remote, command: 'exit'
@@ -55,7 +55,7 @@ stage('Approve to Proceed Data Center 2') {
 
  stage('Backup Data Center 2') {
             steps {
-                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130'
+                sshCommand remote: remote, command: 'ssh -t -t prod@192.168.245.130'
                 sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
                 sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
                 sshCommand remote: remote, command: 'cd /home/stage/backup'
@@ -67,7 +67,7 @@ stage('Approve to Proceed Data Center 2') {
         stage('Deploy Data Center 2') {
             steps {
                 sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/* prod@192.168.245.130:/var/www/html/'
-                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130'
+                sshCommand remote: remote, command: 'ssh -t -t prod@192.168.245.130'
                 sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
                 sshCommand remote: remote, command: 'ls -lrt'
                 sshCommand remote: remote, command: 'exit'
