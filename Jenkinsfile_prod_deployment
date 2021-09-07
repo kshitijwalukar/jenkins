@@ -25,7 +25,7 @@ pipeline {
 
                                     string(defaultValue: 'None',
                                             description: 'Path of config file',
-                                            name: 'Config'),
+                                            name: 'Config')
                                     
                             ])
 
