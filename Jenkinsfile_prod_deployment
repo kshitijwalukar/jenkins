@@ -15,29 +15,22 @@ pipeline {
                 script {
 
                     // Variables for input
-                    def inputConfig
-                    def inputTest
+                    def inputChange
 
                     // Get the input
                     def userInput = input(
-                            id: 'userInput', message: 'Enter path of test reports:?',
+                            id: 'userInput', message: 'Enter Change Number',
                             parameters: [
 
-                                    string(defaultValue: 'None',
-                                            description: 'Path of config file',
-                                            name: 'Config'),
-                                    string(defaultValue: 'None',
-                                            description: 'Test Info file',
-                                            name: 'Test'),
+                                    string(defaultValue: '',
+                                            name: 'Change'),
                             ])
 
                     // Save to variables. Default to empty string if not found.
-                    inputConfig = userInput.Config?:''
-                    inputTest = userInput.Test?:''
+                    inputChange = userInput.Change?:''
 
                     // Echo to console
-                    echo("IQA Sheet Path: ${inputConfig}")
-                    echo("Test Info file path: ${inputTest}")
+                    echo("Change Number: ${inputChange}")
                 }
             }
         }
