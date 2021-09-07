@@ -23,14 +23,10 @@ pipeline {
     }
          
 
-stage("A") {
-    steps {
-      input 'Do you want to proceed to the Deployment?'
+input 'Do you want to proceed to the Deployment?'
    stage('deploy') {
      build job: 'deploy',  propagate: false
    }
-    }  
-}
 
     stage('Test') {
       parallel {
