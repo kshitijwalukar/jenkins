@@ -10,7 +10,7 @@ pipeline {
   agent {label 'Slave1'}
   stages {
   
-    stage ("Prompt for input") {
+    stage ("Request Change Number") {
       steps {
         script {
           env.USERNAME = input message: 'Enter Change Number',
