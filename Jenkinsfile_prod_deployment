@@ -10,12 +10,13 @@ pipeline {
   agent {label 'Slave1'}
   stages {
   
-stage("Interactive_Input") {
+    stage("Interactive_Input") {
             steps {
                 script {
 
                     // Variables for input
-                    def inputChange
+                    def inputConfig
+                    def inputTest
 
                     // Get the input
                     def userInput = input(
@@ -25,14 +26,18 @@ stage("Interactive_Input") {
                                     string(defaultValue: 'None',
                                             description: 'Path of config file',
                                             name: 'Config'),
+                                    string(defaultValue: 'None',
+                                            description: 'Test Info file',
+                                            name: 'Test'),
                             ])
-                            
-                          
+
                     // Save to variables. Default to empty string if not found.
-                    inputChange = userInput.Config?:''
+                    inputConfig = userInput.Config?:''
+                    //inputTest = userInput.Test?:''
 
                     // Echo to console
-                    echo("IQA Sheet Path: ${inputChange}")
+                    echo("IQA Sheet Path: ${inputConfig}")
+                    //echo("Test Info file path: ${inputTest}")
                 }
             }
         }
