@@ -27,7 +27,9 @@ stage("Interactive_Input") {
                                             name: 'Config'),
                             ])
                             
-                          inputChange = userInput.Config?:''
+                          
+                    // Save to variables. Default to empty string if not found.
+                    inputChange = userInput.Config?:''
 
                     // Echo to console
                     echo("IQA Sheet Path: ${inputChange}")
