@@ -10,7 +10,7 @@ pipeline {
   agent {label 'Slave1'}
   stages {
   
-  stage("Interactive_Input") {
+stage("Interactive_Input") {
             steps {
                 script {
 
@@ -24,7 +24,7 @@ pipeline {
 
                                     string(defaultValue: 'None',
                                             description: 'Path of config file',
-                                            name: 'Config'),
+                                            name: 'Config')
                             ])
 
                     // Save to variables. Default to empty string if not found.
@@ -32,7 +32,6 @@ pipeline {
 
                     // Echo to console
                     echo("IQA Sheet Path: ${inputConfig}")
-
                 }
             }
         }
