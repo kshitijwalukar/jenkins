@@ -27,7 +27,7 @@ pipeline {
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cp -a /var/www/html/* /home/prod/backup/"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cd /home/prod/backup"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "ls -lrt"'
-                sshCommand remote: remote, command: 'exit'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "exit"'
             }
         }
           
@@ -36,7 +36,7 @@ pipeline {
                 sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/ prod@192.168.245.129:/var/www/html/'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cd /var/www/html/jenkins"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "ls -lrt"'
-                sshCommand remote: remote, command: 'exit'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "exit"'
             }
         }         
 
@@ -57,7 +57,7 @@ stage('Approve to Proceed Data Center 2') {
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cp -a /var/www/html/* /home/prod/backup/"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cd /home/prod/backup"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "ls -lrt"'
-                sshCommand remote: remote, command: 'exit'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "exit"'
             }
         }
           
@@ -66,7 +66,7 @@ stage('Approve to Proceed Data Center 2') {
                 sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/* prod@192.168.245.130:/var/www/html/'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cd /var/www/html/jenkins"'
                 sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "ls -lrt"'
-                sshCommand remote: remote, command: 'exit'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "exit"'
             }
         }
 
