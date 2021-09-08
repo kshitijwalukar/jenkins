@@ -9,8 +9,8 @@ withCredentials([usernamePassword(credentialsId: 'fe95e991-94b8-4103-a575-7c6c6b
 pipeline {
   agent {label 'Slave1'}
   stages {
-    
-      stage ("Request Change Number") {
+  
+    stage ("Request Change Number") {
       steps {
         script {
           env.USERNAME = input message: 'Enter Change Number',
@@ -23,22 +23,20 @@ pipeline {
     }
  stage('Backup Data Center 1') {
             steps {
-                sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
-                sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
-                sshCommand remote: remote, command: 'cd /home/stage/backup'
-                sshCommand remote: remote, command: 'ls -lrt'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "rm -rf /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cp -a /var/www/html/* /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cd /home/prod/backup"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "ls -lrt"'
+                sshCommand remote: remote, command: 'exit'
             }
         }
           
         stage('Deploy Data Center 1') {
             steps {
-                sshCommand remote: remote, command: 'rm -rf /home/stage/jenkins'
-                sshCommand remote: remote, command: 'cd /home/stage/'
-                sshCommand remote: remote, command: 'git clone https://github.com/kshitijwalukar/jenkins.git'
-                sshCommand remote: remote, command: 'rm -rf /var/www/html/jenkins/*'
-                sshCommand remote: remote, command: 'mv  /home/stage/jenkins/* /var/www/html/jenkins/'
-                sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
-                sshCommand remote: remote, command: 'ls -lrt'
+                sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/ prod@192.168.245.129:/var/www/html/'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cd /var/www/html/jenkins"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "ls -lrt"'
+                sshCommand remote: remote, command: 'exit'
             }
         }         
 
@@ -55,26 +53,23 @@ stage('Approve to Proceed Data Center 2') {
 
  stage('Backup Data Center 2') {
             steps {
-                sshCommand remote: remote, command: 'rm -rf /home/stage/backup/*'
-                sshCommand remote: remote, command: 'cp -a /var/www/html/. /home/stage/backup/'
-                sshCommand remote: remote, command: 'cd /home/stage/backup'
-                sshCommand remote: remote, command: 'ls -lrt'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "rm -rf /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cp -a /var/www/html/* /home/prod/backup/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cd /home/prod/backup"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "ls -lrt"'
+                sshCommand remote: remote, command: 'exit'
             }
         }
           
         stage('Deploy Data Center 2') {
             steps {
-                sshCommand remote: remote, command: 'rm -rf /home/stage/jenkins'
-                sshCommand remote: remote, command: 'cd /home/stage/'
-                sshCommand remote: remote, command: 'git clone https://github.com/kshitijwalukar/jenkins.git'
-                sshCommand remote: remote, command: 'rm -rf /var/www/html/jenkins/*'
-                sshCommand remote: remote, command: 'mv  /home/stage/jenkins/* /var/www/html/jenkins/'
-                sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
-                sshCommand remote: remote, command: 'ls -lrt'
+                sshCommand remote: remote, command: 'scp -r stage@192.168.245.128:/var/www/html/* prod@192.168.245.130:/var/www/html/'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cd /var/www/html/jenkins"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "ls -lrt"'
+                sshCommand remote: remote, command: 'exit'
             }
         }
 
-          
     stage('Test') {
       parallel {
         stage('Maven') {
@@ -96,7 +91,7 @@ stage('Approve to Proceed Data Center 2') {
   }
         post('Send Mail') {
         always {
-            emailext body: 'Stage Deploy Complete', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Stage Deploy'
+            emailext body: 'Prod Deploy Complete', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Prod Deploy'
         }
     }
 }
