@@ -12,9 +12,8 @@ pipeline {
           
         stage('Deploy Rollback Data Center 1') {
             steps {
-                sshCommand remote: remote, command: 'rm -rf /var/www/html/jenkins/*'
-                sshCommand remote: remote, command: 'cp -a  /home/stage/backup/. /var/www/html/jenkins/'
-                sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "rm -rf /var/www/html/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.129 "cp -a /home/prod/backup/* /var/www/html/"'
                 sshCommand remote: remote, command: 'ls -lrt'
             }
         }
@@ -31,9 +30,8 @@ pipeline {
         
         stage('Deploy Rollback Data Center 2') {
             steps {
-                sshCommand remote: remote, command: 'rm -rf /var/www/html/jenkins/*'
-                sshCommand remote: remote, command: 'cp -a  /home/stage/backup/. /var/www/html/jenkins/'
-                sshCommand remote: remote, command: 'cd /var/www/html/jenkins'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "rm -rf /var/www/html/"'
+                sshCommand remote: remote, command: 'ssh -tt prod@192.168.245.130 "cp -a /home/prod/backup/* /var/www/html/"'
                 sshCommand remote: remote, command: 'ls -lrt'
             }
         }
@@ -58,7 +56,7 @@ pipeline {
   }
         post('Send Mail') {
         always {
-            emailext body: 'Stage Rollback Complete', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Stage Rollback'
+            emailext body: 'Prod Rollback Complete', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Prod Rollback'
         }
     }
 }
